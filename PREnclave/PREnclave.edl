@@ -1,0 +1,54 @@
+enclave {
+    from "sgx_tstdc.edl" import *;
+    from "sgx_tsgxssl.edl" import *;
+
+    trusted {
+        /* define ECALLs here. */
+        public int e_hello();
+        public int e_initialize();
+
+        public int e_PREForward(
+        [in, size=data_len] unsigned char* data,
+        size_t data_len,
+        [out, size=result_len] unsigned char* result,
+        size_t result_len
+        );
+       
+        public int e_PREBackward(
+        [in, size=data_len] unsigned char* data,
+        size_t data_len,
+        [out, size=result_len] unsigned char* result,
+        size_t result_len
+        );
+
+        
+        public int e_session(
+        [in, size=key_enc_len] unsigned char* key_enc,
+        size_t key_enc_len,
+        [in, size=iv_enc_len] unsigned char* iv_enc,
+        size_t iv_enc_len,
+        [in, size=publickey_client_len] unsigned char* publickey_client,
+        size_t publickey_client_len
+        );
+
+        public int e_get_session_client(
+        [out, size=key_enc_len] unsigned char* key_enc,
+        size_t key_enc_len,
+        [out, size=iv_enc_len] unsigned char* iv_enc,
+        size_t iv_enc_len
+        );
+
+        public int e_set_key_db_insecure([in, size=key_db_len] unsigned char* key_db, size_t key_db_len);
+
+        public int e_set_private_key_proxy_insecure([in, size=key_proxy_len] unsigned char* key_proxy, size_t key_proxy_len);
+
+        public int e_get_public_key_proxy([out, size=publickey_len] unsigned char* publickey, size_t publickey_len);
+        
+
+    };
+
+    untrusted {
+        /* define OCALLs here. */
+
+    };
+};
