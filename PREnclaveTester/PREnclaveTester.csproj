@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PREnclaveLink\PREnclaveLink.vcxproj" />
+    <ProjectReference Include="..\PREnclaveLink\PREnclaveLink.vcxproj">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if $(Configuration) == Release (&#xD;&#xA;copy &quot;$(SolutionDir)$(Platform)\Prerelease\PREnclaveBridge.dll&quot; &quot;$(OutDir)&quot;&#xD;&#xA;copy &quot;$(SolutionDir)$(Platform)\Prerelease\PREnclave.signed.dll&quot; &quot;$(OutDir)&quot;&#xD;&#xA;) ELSE (&#xD;&#xA;copy &quot;$(SolutionDir)$(Platform)\$(Configuration)\PREnclaveBridge.dll&quot; &quot;$(OutDir)&quot;&#xD;&#xA;copy &quot;$(SolutionDir)$(Platform)\$(Configuration)\PREnclave.signed.dll&quot; &quot;$(OutDir)&quot;&#xD;&#xA;)&#xD;&#xA;" />
+  </Target>
 
 </Project>
